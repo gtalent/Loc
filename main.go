@@ -4,21 +4,20 @@ import (
 	"flag"
 	"fmt"
 	"io/ioutil"
-	"strings"
 )
 
 func main() {
 	flag.Parse()
 	args := flag.Args()
-	total := 0
+	var output Text
 	for _, a := range args {
 		file, err := ioutil.ReadFile(a)
 		if err != nil {
 			fmt.Println(err.String())
 			continue
 		}
-		total += strings.Count(string(file), "\n") + 1
+		data := parseGoFile(string(file))
+		output.Append(data)
 	}
-	fmt.Println(total, "lines.")
+	fmt.Println(output.String())
 }
-
