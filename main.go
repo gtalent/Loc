@@ -10,11 +10,15 @@ func fileExt(val string) string {
 	ret := ""
 	for i := len(val) - 1; i > -1; i-- {
 		ret = string(val[i]) + ret
-		if val[i] == '.'{
+		if val[i] == '.' {
 			break
 		}
 	}
 	return ret
+}
+
+func buildFileList(path string) (retval []string) {
+	return
 }
 
 func main() {
@@ -22,6 +26,7 @@ func main() {
 	langs := func() map[string]*Text {
 		retval := make(map[string]*Text)
 		retval["go"] = new(Text)
+		retval["go"].language = "Go"
 		text = append(text, retval["go"])
 		return retval
 	}()

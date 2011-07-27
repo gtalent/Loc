@@ -20,7 +20,7 @@ func (me *GenericText) String() string {
 }
 
 type Text struct {
-	language string
+	language                                 string
 	files, lines, whitespace, comments, code int
 }
 
@@ -40,7 +40,7 @@ func (me *Text) percentOfFile(val int) int {
 func (me *Text) String() string {
 	r := "Language: " + me.language + "\n"
 	r += "\tLines:\t" + strconv.Itoa(me.lines) + "\n"
-	r += "\tCharacters:\t" + strconv.Itoa(me.whitespace + me.comments + me.code) + "\n"
+	r += "\tCharacters:\t" + strconv.Itoa(me.whitespace+me.comments+me.code) + "\n"
 	r += "\tWhitespace:\t%" + strconv.Itoa(me.percentOfFile(me.whitespace)) + "\n"
 	r += "\tComments:\t%" + strconv.Itoa(me.percentOfFile(me.comments)) + "\n"
 	r += "\tCode:\t\t%" + strconv.Itoa(me.percentOfFile(me.code)) + "\n"

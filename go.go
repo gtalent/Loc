@@ -1,9 +1,8 @@
 package main
 
 //Returns a Text type representing the files conents, and a line count
-func parseGoFile(val string) (Text) {
+func parseGoFile(val string) Text {
 	var file Text
-	var prev byte
 	for i := 0; i < len(val); i++ {
 		a := val[i]
 		switch a {
@@ -12,45 +11,58 @@ func parseGoFile(val string) (Text) {
 				file.lines++
 			}
 			file.whitespace++
-		case '*', '/':
-			if prev == '/' {
-				l, chars := parseGoComments(val[i:])
-				file.comments += chars
-				file.lines += l
-				i += chars
-				prev = 0
-			} else {
-				if a == '/' && i + 1 < len(val) && val[i] == '/' {
-					for _, a := range val {
-						i++
-						if a == '\n' {
+		case '/':
+			//new
+			if !(i+1 < len(val)) { // if does not have next
+				file.code++
+				break
+			}
+			i++
+			switch val[i] {
+			case '/': //starts one line comment
+				{
+					c := val[i]
+					for {
+						file.comments++
+						if c == '\n' {
 							file.lines++
 							break
 						}
+						i++
+						if !(i < len(val)) {
+							break
+						}
+						c = val[i]
 					}
-				} else {
-					file.code++
 				}
+			case '*': //start comment block
+				i++
+				lines, chars := parseGoCommentBlock(val[i:])
+				file.comments += chars + 2 //the + 2 is for the two uncount "i++"s
+				file.lines += lines
+				i += chars
+			default: //does not start comment
+				file.code++
 			}
 		default:
 			file.code++
 		}
-		prev = a
 	}
 	return file
 }
 
-func parseGoComments(val string) (int, int) {
+//Starts processing at the start of comment block's conetents
+func parseGoCommentBlock(val string) (int, int) {
 	lbs := 0
 	chars := 0
 	for i := 0; i < len(val); i++ {
 		if val[i] == '\n' {
 			lbs++
 		}
-		if val[i] == 42 && i+1 < len(val) && val[i+1] == '/' {
+		if val[i] == '*' && i+1 < len(val) && val[i+1] == '/' {
 			break
 		}
 		chars++
 	}
-	return lbs, chars + 1
+	return lbs, chars
 }
