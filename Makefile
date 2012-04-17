@@ -1,14 +1,6 @@
-include $(GOROOT)/src/Make.inc
-
-TARG=main
-GOFILES=\
-	*.go\
-
-include $(GOROOT)/src/Make.pkg
-
+build:
+	go build -o loc
+clean:
+	go clean
 fmt:
-	gofmt -w $(GOFILES)
-link: package
-	$(O)l -o main _go_.$(O)
-run: link
-	./main
+	go fmt

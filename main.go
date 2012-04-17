@@ -36,7 +36,7 @@ func main() {
 	for _, a := range args {
 		file, err := ioutil.ReadFile(a)
 		if err != nil {
-			fmt.Println(err.String())
+			fmt.Println(err)
 			continue
 		}
 		switch fileExt(string(a)) {
